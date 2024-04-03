@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=full-stack-ecommerce
+      - MYSQL_USER=dockerecommerce
+      - MYSQL_PASSWORD=123456
+    volumes:
+      - mysql-host:/var/lib/mysql
+      - ./dump-data:/docker-entrypoint-initdb.d
+    networks:
+      - ecommerce-network
+  spring-backend:
+    depends_on:
+      - mysqldb
+    image: flyflax74/shop-app:be-01
+    ports:
+      - "8443:8443" #<local-port>:<container-port>
+    expose:
+      - "8443"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/full-stack-ecommerce?autoReconnect=true&failOverReadOnly=false&maxReconnects=5
+      SPRING_DATASOURCE_USERNAME: dockerecommerce
+      SPRING_DATASOURCE_PASSWORD: 123456
+#      allowed.origins: https://localhost:4200, http://localhost:4200
+    stdin_open: true
+    tty: true
+    volumes:
+      - spring-be:/var/lib/backend
+    networks:
+      - ecommerce-network
+  angular-fe:
+    image: flyflax74/shop-app:fe
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - spring-backend
+    volumes:
+      - angular-fe:/var/lib/frontend
+    networks:
+      - ecommerce-network
+  
+volumes:
+  mysql-host:
+  spring-be:
+  angular-fe:
+
+networks:
+  ecommerce-network:

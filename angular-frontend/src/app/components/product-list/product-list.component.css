@@ -1,0 +1,7 @@
+.product-box a {
+    display: block;
+    text-decoration: none;
+}
+.price {
+    margin-top: 10px
+}

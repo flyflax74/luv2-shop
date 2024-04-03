@@ -1,0 +1,99 @@
+<div class="main-content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <!--Check cart is empty or not ?? -->
+            <div *ngIf="cartItems.length > 0; else elseBlock">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="20%">Product Image</th>
+                        <th width="40%">Product Detail</th>
+                        <th width="40%">Quantity</th>
+                    </tr>
+
+                    <tr *ngFor="let tempCartItem of cartItems">
+                        <td>
+                            <img src="{{tempCartItem.imageUrl}}" class="img-responsive" width="150px">
+                        </td>
+
+                        <td>
+                            <p>{{tempCartItem.name}}</p>
+                            <p>{{tempCartItem.unitPrice | currency : 'USD'}}</p>
+                        </td>
+
+                        <td>
+                            <div class="items">
+                                <!-- <label style="margin-right: 5px;" >Quantity:</label>  -->
+
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <button (click)="decrementQuantity(tempCartItem)" class="btn btn-primary btn-sm ">
+                                            <i class="fa fa-minus"></i>
+                                        </button>                                                           
+                                    </div>
+    
+                                    <div class="col pl-3">
+                                        {{tempCartItem.quantity}}
+                                    </div>
+    
+                                    <div class="col">
+                                        <button (click)="incrementQuantity(tempCartItem)" class="btn btn-primary btn-sm ">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="col-8"></div>
+                                </div>
+
+                            </div>
+
+                            <!-- <p class="mt-2">Subtotal: {{tempCartItem.quantity * tempCartItem.unitPrice |
+                                currency:'USD'}}</p> -->
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="font-weight: bold">
+                            <p class="mt-6">Total Quantity: {{ totalQuantity }}</p>
+                            <!-- <p class="mt-6">Sub Total   : {{ totalPrice | currency: 'USD'}}</p>
+                            <p class="mt-6">Shipping    : FREE</p> -->
+                            <p class="mt-6">
+                                <span style="padding-right: 12px;">Sub Total</span>: {{ totalPrice | currency: 'USD' }}
+                            </p>
+                            <p class="mt-6">
+                                <span style="padding-right: 15px;">Shipping</span>: FREE
+                            </p>
+                            <!-- <div class="mt-6" >
+                                <label for="couponCode">Nhập mã giảm giá:</label>
+                                <input type="text" id="couponCode" [(ngModel)]="couponCode" (focus)="clearError()" />
+                              
+                                <button class="btn btn-primary" [disabled]="couponCode === ''" (click)="applyCoupon()">Áp dụng</button>
+                            </div> -->
+                            <div class=" d-flex align-items-center" style ="margin: 0; padding: 0 8px;">
+                                <label style="min-width: 160px;" for="couponCode" class="mr-2">Nhập mã giảm giá:</label>
+                                <input style="margin-right: 12px;"type="text" id="couponCode" [(ngModel)]="couponCode" class="form-control mr-2" (focus)="clearError()" />
+                                <button style="width: 166px; margin-right: 4px  " class="btn btn-primary" [disabled]="couponCode === ''" (click)="applyCoupon()">Apply</button>
+                            </div>
+                            
+                            <div *ngIf="error" style="color: red; margin: 0; padding: 0 8px;" >    {{ error}}    </div> 
+
+                            <p class="mt-6">Total Price    :  {{ totalPricest | currency: 'USD' }}</p>  
+                            <button routerLink="/checkout" class="btn btn-primary" > Checkout </button>                     
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <ng-template #elseBlock>
+                <div class="alert alert-warning" role="alert"> 
+                    Your cart is empty ...
+                </div>
+
+                <div style="text-align: center;">
+                    <a routerLink="/products" style="justify-content: center; font-size: 12px;"> Continue Shopping? </a>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+</div>

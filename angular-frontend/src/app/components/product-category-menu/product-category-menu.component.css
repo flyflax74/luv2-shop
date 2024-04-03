@@ -1,0 +1,8 @@
+.list-unstyled.navbar-list li a {
+    text-decoration: none !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.list-unstyled.navbar-list li {
+    padding: 4px 0;
+}
